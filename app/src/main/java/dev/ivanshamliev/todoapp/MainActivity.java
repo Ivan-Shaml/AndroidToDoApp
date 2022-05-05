@@ -1,7 +1,6 @@
 package dev.ivanshamliev.todoapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +10,10 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 
 public class MainActivity extends DatabaseActivity {
@@ -25,17 +23,17 @@ public class MainActivity extends DatabaseActivity {
     protected ListView itemsListView;
     protected EditText itemText;
 
-    protected void LoadDataIntoView() throws Exception {
+    protected void loadDataIntoView() throws Exception {
         final ArrayList<TaskModel> tasksList =
                 new ArrayList<>();
         itemsListView.clearChoices();
-        SelectSQL(
+        selectSQL(
                 "SELECT * FROM TODOS " +
                         "ORDER BY Id",
                 null,
                 new OnSelectSuccess() {
                     @Override
-                    public void OnElementSelected(Integer Id, String Text, LocalDateTime DateCreated, LocalDateTime DateModified, int isDone) {
+                    public void onElementSelected(Integer Id, String Text, LocalDateTime DateCreated, LocalDateTime DateModified, int isDone) {
                         tasksList.add(new TaskModel(Id, Text, DateCreated, DateModified, isDone >= 1));
                     }
                 }
@@ -54,6 +52,20 @@ public class MainActivity extends DatabaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit ?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finishAffinity(); //closes app removing it from memory
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -65,16 +77,12 @@ public class MainActivity extends DatabaseActivity {
         itemText = findViewById(R.id.addNoteTextView);
         deleteAllDoneBtn = findViewById(R.id.deleteAllDone);
 
-        LoadData();
+        loadData();
         try {
-            LoadDataIntoView();
+            loadDataIntoView();
         } catch (Exception ex) {
-        ex.printStackTrace();
-        Toast.makeText(getApplicationContext(),
-                ex.getMessage(),
-                Toast.LENGTH_LONG
-        ).show();
-    }
+            showToastNotification(ex.getMessage());
+        }
 
         itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -117,27 +125,37 @@ public class MainActivity extends DatabaseActivity {
                 newTask.setDateModifiled(LocalDateTime.now());
                 newTask.setText(text);
                 insert(newTask);
-                LoadDataIntoView();
+                loadDataIntoView();
                 itemText.setText("");
                 itemText.clearFocus();
             } catch (Exception ex) {
-                Toast.makeText(getApplicationContext(),
-                        ex.getMessage(),
-                        Toast.LENGTH_LONG
-                ).show();
+                showToastNotification(ex.getMessage());
             }
         });
 
         deleteAllDoneBtn.setOnClickListener(view -> {
-            try {
-                deleteDone();
-                LoadDataIntoView();
-            } catch (Exception ex) {
-                Toast.makeText(getApplicationContext(),
-                        ex.getMessage(),
-                        Toast.LENGTH_LONG
-                ).show();
-            }
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            try {
+                                deleteDone();
+                                loadDataIntoView();
+                            } catch (Exception ex) {
+                                showToastNotification(ex.getMessage());
+                            }
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+
+            String dialogTitle = getString(R.string.deleteAllDoneItemsDialogTitle);
+            String dialogMessage = getString(R.string.deleteAllDoneItemsDialogMessage);
+
+            showConfirmationDialog(dialogTitle, dialogMessage, dialogClickListener);
         });
     }
 }

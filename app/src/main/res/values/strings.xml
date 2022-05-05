@@ -23,4 +23,8 @@
     <string name="taskStatusTVTextDone">Done</string>
     <string name="taskStatusTVTextPending">Pending</string>
     <string name="tStatusButtonDone">Set done</string>
+    <string name="deleteSingleItemDialogTitle">Delete item ?</string>
+    <string name="deleteSingleItemDialogMessage">Are you sure you want to delete this item ?</string>
+    <string name="deleteAllDoneItemsDialogTitle">Delete all done</string>
+    <string name="deleteAllDoneItemsDialogMessage">Are you sure you want to delete all items with done status ?</string>
 </resources>

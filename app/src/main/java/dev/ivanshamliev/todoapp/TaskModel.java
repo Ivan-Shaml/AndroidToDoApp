@@ -12,10 +12,10 @@ public class TaskModel implements Serializable {
     private LocalDateTime DateModifiled;
     private boolean isDone;
 
-    public TaskModel()
-    {
+    public TaskModel() {
 
     }
+
     public TaskModel(int id, String text, LocalDateTime dateCreated, LocalDateTime dateModifiled, boolean isDone) {
         Id = id;
         Text = text;
