@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layoutDescription="@xml/activity_main_scene"
+    tools:context=".MainActivity" >
+
+    <EditText
+        android:id="@+id/addNoteTextView"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:hint="@string/add_new_item" />
+
+    <Button
+        android:id="@+id/addItemButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/dark_green"
+        android:text="@string/add" />
+
+    <Button
+        android:id="@+id/deleteAllDone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/dark_red"
+        android:text="@string/delete_all_done" />
+
+    <ListView
+        android:id="@+id/itemsListView"
+        android:layout_width="match_parent"
+        android:layout_height="551dp"
+        android:minHeight="300dp">
+
+    </ListView>
+
+</LinearLayout>
