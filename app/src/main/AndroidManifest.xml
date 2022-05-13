@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoApp" >
         <activity
-            android:name=".EditDelete"
+            android:name=".EditDeleteActivity"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTop"
             android:exported="false" />

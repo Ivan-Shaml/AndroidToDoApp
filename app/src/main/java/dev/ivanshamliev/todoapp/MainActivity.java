@@ -102,7 +102,7 @@ public class MainActivity extends DatabaseActivity {
                 TaskModel task = (TaskModel) itemsListView.getItemAtPosition(i);
                 Intent intent = new Intent(
                         MainActivity.this,
-                        EditDelete.class
+                        EditDeleteActivity.class
                 );
 
                 intent.putExtra("task", task);

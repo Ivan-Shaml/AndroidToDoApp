@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.time.LocalDateTime;
 
-public class EditDelete extends DatabaseActivity {
+public class EditDeleteActivity extends DatabaseActivity {
 
     protected TaskModel task;
 
